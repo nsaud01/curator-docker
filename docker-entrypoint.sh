@@ -7,4 +7,9 @@ if [ -z "$ELASTICSEARCH_HOST" ]; then
   exit 1
 fi
 
+if [ -z "$MAX_INDEX_AGE" ]; then
+  echo "MAX_INDEX_AGE must be configured"
+  exit 1
+fi
+
 exec "$@"

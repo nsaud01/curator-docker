@@ -9,3 +9,8 @@ The list of tasks currently are:
 `ELASTICSEARCH_HOST` - The hostname or IP address of an elasticsearch cluster.
 
 `MAX_INDEX_AGE` - The maximum age (in days) a logstash index can be until it is deleted.
+
+## Building
+
+docker build -t qw4n7y/curator-docker -f Dockerfile .
+docker push qw4n7y/curator-docker
