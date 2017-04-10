@@ -1,18 +1,19 @@
-FROM gliderlabs/alpine:3.2
+FROM ubuntu:12.04
 
 ENV CURATOR_VERSION 4.2.6
 ENV ELASTICSEARCH_PORT 9200
 
-RUN apk --update add python py-pip bash && pip install elasticsearch-curator==$CURATOR_VERSION
+RUN apt-get update
+RUN apt-get install -y python-pip cron
+RUN pip install elasticsearch-curator==$CURATOR_VERSION
 
 ADD docker-entrypoint.sh /
 
 RUN mkdir -p /root/.curator
-ADD setup_config.sh /root/
 ADD curator/curator.yml /root/.curator
 ADD curator/purge_old_indeces.yml /root/.curator
 
-RUN printf "\n0\t2\t*\t*\t*\tbash -c '/root/setup_config.sh && curator --config /root/.curator/curator.yml /root/.curator/purge_old_indeces.yml'" >> /etc/crontabs/root
+ADD purge_old_indeces.sh /etc/cron.hourly/
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["crond", "-f", "-l", "8"]
+CMD ["/usr/sbin/cron", "-f", "-L 8"]
