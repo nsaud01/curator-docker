@@ -13,7 +13,7 @@ RUN mkdir -p /root/.curator
 ADD curator/curator.yml /root/.curator
 ADD curator/purge_old_indeces.yml /root/.curator
 
-ADD purge_old_indeces.sh /etc/cron.hourly/
+COPY purge_old_indeces.sh /etc/cron.hourly/purge_old_indeces
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/usr/sbin/cron", "-f", "-L 8"]
